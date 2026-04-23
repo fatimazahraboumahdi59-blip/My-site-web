@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+
+</head>
+
+<body>
+
+<!-- 🔝 HEADER -->
+<header>
+    <h2>Fatimazahra & Houria</h2>
+
+    <nav>
+        <a href="#home">Accueil</a>
+        <a href="#about">À propos</a>
+        <a href="#projects">Projets</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- زر mode -->
+    <button onclick="toggleMode()">🌙 / ☀️</button>
+</header>
+
+<!-- 🏠 HOME -->
+<section id="home" class="hero">
+    <div class="team-images">
+        <img src="fatima.jpeg"alt="Fatimazahra">
+    <div class="team-images">
+        <img src="bensidi.jpeg"alt="Houria">    
+    </div>
+</section>
+<h1 style="text-align: center;">Bienvenue dans notre portofolio</h1>
+<p style="text-align: center;margin-top:3%;">Nous sommes des étudiantes passionnées par le dévloppement web</p>
+
+<!-- 📦 CARDS -->
+<section class="cards">
+
+    <!-- ℹ️ ABOUT -->
+    <div class="card" id="about">
+        <h2>À propos</h2>
+        <p>
+       Nous sommes <div style="color: rgb(119, 174, 226);"> <strong>Fatimazahra BOUMAHDI</strong> </div> et <div style="color: rgb(119, 174, 226);"><strong>Houria BENSIDI</strong></div>, étudiantes en première année en Génie Informatique à l’École Supérieure de Technologie de Guelmim.
+
+Animées par une forte passion pour le développement web et les technologies numériques, nous nous investissons pleinement dans l’acquisition de compétences techniques solides, notamment en HTML, CSS et JavaScript. À travers notre formation académique et nos projets personnels, nous développons des solutions web modernes, interactives et centrées sur l’expérience utilisateur.
+
+Rigoureuses, motivées et déterminées, nous travaillons continuellement à améliorer notre niveau jour après jour, en explorant de nouvelles technologies, en relevant des défis techniques et en consolidant nos connaissances à travers la pratique.
+
+Nous accordons une grande importance à la qualité du code, à l’ergonomie des interfaces ainsi qu’au respect des bonnes pratiques du développement web. Notre objectif est de devenir des développeuses web compétentes, capables de concevoir des applications performantes, évolutives et adaptées aux besoins réels.
+
+Ouvertes aux opportunités de stage, de collaboration et d’apprentissage, nous sommes prêtes à nous engager dans des projets concrets afin de mettre en pratique nos compétences et contribuer activement au monde professionnel.
+        </p>
+    </div>
+
+    <!-- 💻 PROJECTS -->
+    <div class="card" id="projects">
+        <h2>Projets</h2>
+
+        <button onclick="openProject1()">Projet1</button>
+        <button onclick="openProject2()">Projet2</button>
+
+    </div>
+
+    <!-- 📩 CONTACT -->
+   
+<section> 
+  <div class="card" id="contact">
+    <h2>Contact</h2>
+
+    <form action="https://formspree.io/f/myklpaly" method="POST">
+      <input type="text" name="name" id="name" placeholder="Nom" required>
+      
+      <input type="email" name="email" id="email" placeholder="Email" required>
+      
+      <textarea name="message" id="message" placeholder="message" required>
+
+      </textarea>
+      <button type="submit">Envoyer</button>
+    </form>
+  </div>
+</section> 
+        
+       
+
+</section>
+
+<!-- JS -->
+<script src="script.js"></script>
+
+</body>
+</html>
