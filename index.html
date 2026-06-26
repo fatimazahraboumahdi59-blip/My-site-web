@@ -2,96 +2,98 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio</title>
-
+<title>SGPR</title>
 <link rel="stylesheet" href="style.css">
-
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-<!-- 🔝 HEADER -->
 <header>
-    <h2>Fatimazahra & Houria</h2>
+    <div class="logo">
+        <img src="logo.jpeg" alt="logo">
+        <div>
+            <h2>SGPR</h2>
+            <p>Système de gestion des prix de référence</p>
+        </div>
+    </div>
 
     <nav>
-        <a href="#home">Accueil</a>
-        <a href="#about">À propos</a>
-        <a href="#projects">Projets</a>
-        <a href="#contact">Contact</a>
+        <a href="#"><i class="fa-solid fa-house"></i> Accueil</a>
     </nav>
 
-    <!-- زر mode -->
-    <button onclick="toggleMode()">🌙 / ☀️</button>
 </header>
 
-<!-- 🏠 HOME -->
-<section id="home" class="hero">
-    <div class="team-images">
-        <img src="fatima.jpeg"alt="Fatimazahra">
-    <div class="team-images">
-        <img src="bensidi.jpeg"alt="Houria">    
-    </div>
+<section class="title">
+    <img src="logo.jpeg">
+    <h1>SGPR</h1>
+    <p>Système de gestion des prix de référence</p>
 </section>
-<h1 style="text-align: center;">Bienvenue dans notre portofolio</h1>
-<p style="text-align: center;margin-top:3%;">Nous sommes des étudiantes passionnées par le dévloppement web</p>
 
-<!-- 📦 CARDS -->
-<section class="cards">
+<div class="container">
 
-    <!-- ℹ️ ABOUT -->
-    <div class="card" id="about">
-        <h2>À propos</h2>
-        <p>
-       Nous sommes <div style="color: rgb(119, 174, 226);"> <strong>Fatimazahra BOUMAHDI</strong> </div> et <div style="color: rgb(119, 174, 226);"><strong>Houria BENSIDI</strong></div>, étudiantes en première année en Génie Informatique à l’École Supérieure de Technologie de Guelmim.
-
-Animées par une forte passion pour le développement web et les technologies numériques, nous nous investissons pleinement dans l’acquisition de compétences techniques solides, notamment en HTML, CSS et JavaScript. À travers notre formation académique et nos projets personnels, nous développons des solutions web modernes, interactives et centrées sur l’expérience utilisateur.
-
-Rigoureuses, motivées et déterminées, nous travaillons continuellement à améliorer notre niveau jour après jour, en explorant de nouvelles technologies, en relevant des défis techniques et en consolidant nos connaissances à travers la pratique.
-
-Nous accordons une grande importance à la qualité du code, à l’ergonomie des interfaces ainsi qu’au respect des bonnes pratiques du développement web. Notre objectif est de devenir des développeuses web compétentes, capables de concevoir des applications performantes, évolutives et adaptées aux besoins réels.
-
-Ouvertes aux opportunités de stage, de collaboration et d’apprentissage, nous sommes prêtes à nous engager dans des projets concrets afin de mettre en pratique nos compétences et contribuer activement au monde professionnel.
-        </p>
-    </div>
-
-    <!-- 💻 PROJECTS -->
-    <div class="card" id="projects">
-        <h2>Projets</h2>
-
-        <button onclick="openProject1()">Projet1</button>
-        <button onclick="openProject2()">Projet2</button>
-
-    </div>
-
-    <!-- 📩 CONTACT -->
+<!-- ADMIN PRICE -->
+<div class="admin-box">
+    <input id="adminPrice" type="number" placeholder="Prix administration  (estimation) DH ">
+</div>
+<div>
    
-<section> 
-  <div class="card" id="contact">
-    <h2>Contact</h2>
+<div class="options">
 
-    <form action="https://formspree.io/f/myklpaly" method="POST">
-      <input type="text" name="name" id="name" placeholder="Nom" required>
-      
-      <input type="email" name="email" id="email" placeholder="Email" required>
-      
-      <textarea name="message" id="message" placeholder="message" required>
+    <label>Nature :</label>
 
-      </textarea>
-      <button type="submit">Envoyer</button>
-    </form>
-  </div>
-</section> 
-        
-       
+    <select id="nature">
+        <option value="aucun">.....</option>
+        <option value="travaux">Travaux</option>
+        <option value="fourniture">Fourniture</option>
+        <option value="service">Service</option>
+    </select>
 
-</section>
+</div>
 
-<!-- JS -->
+<div id="etudiantsDiv" style="display:none; margin-top:15px;">
+
+    <label>Pourtaut sur les études:</label>
+
+    <select id="etudiants">
+        <option value="oui">Oui</option>
+        <option value="non">Non</option>
+    </select>
+
+</div>
+<table>
+<thead>
+<tr>
+    <th>Entreprise</th>
+    <th>Avant correction</th>
+    <th>Après correction</th>
+</tr>
+</thead>
+
+<tbody id="tbody">
+<tr>
+    <td><input class="company" type="text" placeholder="Nom société"></td>
+    <td><input class="before" type="number"></td>
+    <td><input class="after" type="number" ></td>
+</tr>
+</tbody>
+</table>
+
+<button class="add-btn" onclick="addRow()">+ Ajouter ligne</button>
+
+<br><br>
+
+<button class="save" onclick="calculate()">Calculer</button>
+
+<div id="result"></div>
+
+</div>
+
+<footer>
+© SGPR - Système de gestion des prix de référence
+</footer>
+
+
 <script src="script.js"></script>
 
 </body>

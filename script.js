@@ -1,109 +1,145 @@
-/* 🧠 INIT EMAILJS (بدلي بالمعلومات ديالك) */
-const publicKey = "YOUR_PUBLIC_KEY";
-const serviceID = "YOUR_SERVICE_ID";
-const templateID = "YOUR_TEMPLATE_ID";
+let companies = [];
+let prixReferentiel = 0;
 
-(function(){
-    emailjs.init(publicKey);
-})();
+function addRow() {
+    let tbody = document.getElementById("tbody");
 
+    let row = document.createElement("tr");
 
-/* 🧭 1. SCROLL SMOOTH */
-document.querySelectorAll("nav a").forEach(link => {
-    link.addEventListener("click", function(e) {
-        e.preventDefault();
+    row.innerHTML = `
+        <td><input class="company" type="text" placeholder="Nom société"></td>
+        <td><input class="before" type="number" value="0"></td>
+        <td><input class="after" type="number" value="0"></td>
+    `;
 
-        const target = document.querySelector(this.getAttribute("href"));
-        target.scrollIntoView({
-            behavior: "smooth"
-        });
-    });
-});
+    tbody.appendChild(row);
+}
 
+function calculate() {
 
-/* ✨ 2. ANIMATION عند scroll */
-const cards = document.querySelectorAll(".card");
+    companies = [];
 
-function showCards() {
-    cards.forEach(card => {
-        const position = card.getBoundingClientRect().top;
-        const screen = window.innerHeight;
+    let rows = document.querySelectorAll("#tbody tr");
 
-        if (position < screen - 100) {
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
+    rows.forEach(row => {
+        let name = row.querySelector(".company").value.trim();
+        let before = parseFloat(row.querySelector(".before").value) || 0;
+        let after = parseFloat(row.querySelector(".after").value) || 0;
+
+        if (name !== "") {
+            companies.push({ name, before, after });
         }
     });
+
+    let adminPrice = parseFloat(document.getElementById("adminPrice").value) || 0;
+
+    if (companies.length === 0) return;
+
+    let nature = document.getElementById("nature").value;
+    let etudiants = document.getElementById("etudiants").value;
+
+    // 📊 prix référentiel الأولي
+    let total = companies.reduce((sum, c) => sum + c.after, 0);
+    let moyenne = total / companies.length;
+    prixReferentiel = (moyenne + adminPrice) / 2;
+
+    // 🚫 الإقصاء
+    let filtered = companies.filter(c => {
+
+        let p = c.after;
+
+        if (nature === "travaux") {
+            return !(p > prixReferentiel * 1.20 || p < prixReferentiel * 0.80);
+        }
+
+        if (nature === "fourniture") {
+            return !(p > prixReferentiel * 1.20 || p < prixReferentiel * 0.75);
+        }
+
+        if (nature === "service") {
+
+            if (etudiants === "non") {
+                return !(p > prixReferentiel * 1.20 || p < prixReferentiel * 0.80);
+            }
+
+            if (etudiants === "oui") {
+                return true; // ما كاينش إقصاء
+            }
+        }
+
+        return true;
+    });
+
+    if (filtered.length === 0) {
+        document.getElementById("result").innerHTML =
+            "<h3>❌ Aucune entreprise retenue</h3>";
+        return;
+    }
+
+    // 📌 prix référentiel النهائي
+    let total2 = filtered.reduce((sum, c) => sum + c.after, 0);
+    prixReferentiel = (total2 / filtered.length + adminPrice) / 2;
+
+    // 🔽 الترتيب حسب الأقرب
+    let sorted = filtered.map(c => ({
+        ...c,
+        gap: Math.abs(c.after - prixReferentiel)
+    }));
+
+    sorted.sort((a, b) => a.gap - b.gap);
+
+    // 📊 العرض
+    let html = `
+        <h3>📊 Prix Référentiel: ${prixReferentiel.toFixed(2)} DH</h3>
+        <table border="1" width="100%" style="margin-top:10px;">
+            <tr>
+                <th>Rang</th>
+                <th>Entreprise</th>
+                <th>Avant</th>
+                <th>Après</th>
+            </tr>
+    `;
+
+    sorted.forEach((c, i) => {
+        html += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${c.name}</td>
+                <td>${c.before}</td>
+                <td>${c.after}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+
+    document.getElementById("result").innerHTML = html;
 }
 
-window.addEventListener("scroll", showCards);
 
-/* إعداد أولي */
-cards.forEach(card => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(50px)";
-    card.style.transition = "0.5s";
+// 🔽 إظهار / إخفاء service option
+const nature = document.getElementById("nature");
+const etudiantsDiv = document.getElementById("etudiantsDiv");
+const etudiants = document.getElementById("etudiants");
+
+nature.addEventListener("change", function () {
+
+    if (this.value === "service") {
+        etudiantsDiv.style.display = "block";
+    } else {
+        etudiantsDiv.style.display = "none";
+    }
+
+    // إعادة الحساب مباشرة بدون مسح الجدول
+    if (document.querySelectorAll("#tbody tr").length > 0) {
+        calculate();
+    }
 });
 
+// إعادة الحساب عند تغيير Oui / Non
+etudiants.addEventListener("change", function () {
 
-/* 🌙 3. DARK / LIGHT MODE */
-function toggleMode() {
-    document.body.classList.toggle("light");
-}
-
-
-/* 📩 4. SEND EMAIL */
-function sendMessage() {
-
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
-
-    if (name === "" || email === "" || message === "") {
-        alert("Veuillez remplir tous les champs⚠️");
-        return;
+    if (document.querySelectorAll("#tbody tr").length > 0) {
+        calculate();
     }
-
-    if (!email.includes("@")) {
-        alert(" L'adresse email est incorrecte❌");
-        return;
-    }
-
-    emailjs.send(serviceID, templateID, {
-        from_name: name,
-        from_email: email,
-        message: message
-    })
-    .then(() => {
-        alert("Le message a été envoyé avec succés✅");
-
-        // تنظيف الفورم
-        document.getElementById("name").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("message").value = "";
-    })
-    .catch(() => {
-        alert("Erreur❌");
-    });
-}
-
-
-/* 📂 5. OPEN PROJECT */
-function openProject1() {
-    window.location.href = "Projet1.html";
-}
-function openProject2() {
-    window.location.href = "Projet2.html";
-}
-
-
-/* 🎯 6. HOVER EFFECT PROJECTS */
-document.querySelectorAll("#projects button").forEach(btn => {
-    btn.addEventListener("mouseover", () => {
-        btn.style.transform = "scale(1.1)";
-    });
-
-    btn.addEventListener("mouseout", () => {
-        btn.style.transform = "scale(1)";
-    });
 });
